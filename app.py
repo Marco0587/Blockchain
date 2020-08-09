@@ -1,9 +1,10 @@
 from textwrap import dedent
-import json
-from flask import Flask
-from flask import jsonify
 from uuid import uuid4
+
+from flask import Flask, jsonify, request
+
 from blockchain import Blockchain
+
 
 # Instantiate our Node
 app = Flask(__name__)
@@ -14,6 +15,9 @@ node_identifier = str(uuid4()).replace('-', '')
 # Instantiate the Blockchain
 blockchain = Blockchain()
 
+# @app.route('/')
+# def hello_world():
+#     return 'Ciao bomber!'
 
 @app.route('/mine', methods=['GET'])
 def mine():
@@ -32,4 +36,4 @@ def full_chain():
     return jsonify(response), 200
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='127.0.0.1', port=5000)
