@@ -1,6 +1,7 @@
 from textwrap import dedent
 import json
 from flask import Flask
+from flask import jsonify
 from uuid import uuid4
 from blockchain import Blockchain
 
@@ -28,7 +29,7 @@ def full_chain():
         'chain': blockchain.chain,
         'length': len(blockchain.chain),
     }
-    return json.jsonify(response), 200
+    return jsonify(response), 200
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
