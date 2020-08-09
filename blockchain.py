@@ -16,7 +16,7 @@ class Blockchain():
             'timestamp': str(datetime.now()),
             'transactions': self.current_transactions,
             'proof': proof,
-            'previous_hash': previous_hash or Blockchain.hash(self.chain[-1]),
+            'previous_hash': previous_hash or self.hash(self.chain[-1]),
         }
 
         self.current_transactions = []
@@ -48,7 +48,7 @@ class Blockchain():
 
     def proof_of_work(self, last_proof):
         proof = 0
-        while Blockchain.valid_proof(last_proof, proof) is False:
+        while self.valid_proof(last_proof, proof) is False:
             proof +=1
         return proof
     
