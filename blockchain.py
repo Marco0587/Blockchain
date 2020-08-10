@@ -16,7 +16,7 @@ class Blockchain():
             'timestamp': str(datetime.now()),
             'transactions': self.current_transactions,
             'proof': proof,
-            'previous_hash': previous_hash or self.hash(self.chain[-1]),
+            'previous_hash': previous_hash or self.hash(self.last_block),
         }
 
         self.current_transactions = []
@@ -46,14 +46,17 @@ class Blockchain():
     def last_block(self):
         return self.chain[-1]
 
-    def proof_of_work(self, last_proof):
+    def proof_of_work(self, last_block):
+        last_proof = last_block['proof']
+        last_hash = self.hash(last_block)
+
         proof = 0
-        while self.valid_proof(last_proof, proof) is False:
+        while self.valid_proof(last_proof, proof, last_hash) is False:
             proof +=1
         return proof
     
     @staticmethod
-    def valid_proof(last_proof, proof):
-        guess = "{}{}".format(last_proof, proof).encode()
-        h = hashlib.sha256(guess).hexdigest()
-        return h.startswith('00')
+    def valid_proof(last_proof, proof, last_hash):
+        guess = "{}{}{}".format(last_proof, proof, last_hash).encode()
+        guess_hash = hashlib.sha256(guess).hexdigest()
+        return guess_hash.startswith('00')
